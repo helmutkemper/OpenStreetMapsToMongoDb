@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y nginx
 
 # log to stderr
 RUN sed -ri 's!\berror_log\s+\S*\b!error_log stderr!' /etc/nginx/nginx.conf && echo '\n# prevent backgrounding (for Docker)\ndaemon off;' >> /etc/nginx/nginx.conf
-ADD ./nginx-site.conf /etc/nginx/sites-available/default
+ADD ./nginx.conf /etc/nginx
 ADD ./index.htm /var/app/current
 
 EXPOSE 80
