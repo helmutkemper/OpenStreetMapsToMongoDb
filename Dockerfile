@@ -8,7 +8,7 @@ RUN echo 'deb http://nginx.org/packages/debian/ wheezy nginx' > /etc/apt/sources
 RUN apt-get update && apt-get install -y nginx
 
 # log to stderr
-RUN sed -ri 's!\berror_log\s+\S*\b!error_log stderr!' /etc/nginx/nginx.conf && echo '\n# prevent backgrounding (for Docker)\ndaemon off;' >> /etc/nginx/nginx.conf
+#RUN sed -ri 's!\berror_log\s+\S*\b!error_log stderr!' /etc/nginx/nginx.conf && echo '\n# prevent backgrounding (for Docker)\ndaemon off;' >> /etc/nginx/nginx.conf
 ADD ./nginx.conf /etc/nginx
 ADD ./index.htm /var/app/current
 
