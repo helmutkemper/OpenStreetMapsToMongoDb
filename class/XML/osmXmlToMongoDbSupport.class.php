@@ -229,43 +229,83 @@
       // coleção tmpNodeTag
       $indexInfoLArr =  $this->collectionTmpNodeTagCObj->getIndexInfo();
 
-      if( !$this->getIndexExists( $indexInfoLArr, "_id_node_" ) ){
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_id_node" ) ){
         $this->collectionTmpNodeTagCObj->createIndex( array( "id_node" => 1 ), array( "name" => "osm_id_node" ) );
       }
 
       // coleção nodes
       $indexInfoLArr =  $this->collectionNodesCObj->getIndexInfo();
 
-      if( !$this->getIndexExists( $indexInfoLArr, "_id_node_" ) ){
-        $this->collectionNodesCObj->createIndex( array( "location" => "2d", "bits" => 26 ), array( "name" => "osm_location_2d" ) );
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_location_2d" ) ){
+        $this->collectionNodesCObj->createIndex( array( "location" => "2d", "bits" => 26 ), array( "name" => "osm_location_2d_26bits" ) );
       }
 
-      if( !$this->getIndexExists( $indexInfoLArr, "_id_node_" ) ){
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_id_node" ) ){
         $this->collectionNodesCObj->createIndex( array( "tags" => 1 ), array( "name" => "osm_id_node" ) );
       }
 
-      if( !$this->getIndexExists( $indexInfoLArr, "_id_node_" ) ){
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_tag_name" ) ){
         $this->collectionNodesCObj->createIndex( array( "tags.name.val" => 1 ), array( "name" => "osm_tag_name" ) );
       }
 
-      if( !$this->getIndexExists( $indexInfoLArr, "_id_node_" ) ){
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_tag_place" ) ){
         $this->collectionNodesCObj->createIndex( array( "tags.place.val" => 1 ), array( "name" => "osm_tag_place" ) );
       }
 
+      // coleção tmpWays
+      $indexInfoLArr =  $this->collectionTmpWaysCObj->getIndexInfo();
 
-      //$this->collectionTmpWaysCObj->createIndex( array( "id_way" => 1 ) );
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_id_way" ) ){
+        $this->collectionTmpWaysCObj->createIndex( array( "id_way" => 1 ), array( "name" => "osm_id_way" ) );
+      }
 
-      //$this->collectionTmpWayTagCObj->createIndex( array( "id_way" => 1 ) );
+      // coleção tmpWayTag
+      $indexInfoLArr =  $this->collectionTmpWayTagCObj->getIndexInfo();
 
-      //$this->collectionTmpWayNodeCObj->createIndex( array( "id_way" => 1 ) );
-      //$this->collectionTmpWayNodeCObj->createIndex( array( "id_node" => 1 ) );
-      //$this->collectionTmpWayNodeCObj->createIndex( array( "id_way" => 1, "id_node" => 1 ) );
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_id_way" ) ){
+        $this->collectionTmpWayTagCObj->createIndex( array( "id_way" => 1 ), array( "name" => "osm_id_way" ) );
+      }
 
-      //$this->collectionNodesCObj->createIndex( array( "latitude" => 1, "longitude" => 1 ) );
-      //$this->collectionNodesCObj->createIndex( array( "tags" => "text" ) );
+      // coleção tmpWayNode
+      $indexInfoLArr =  $this->collectionTmpWayNodeCObj->getIndexInfo();
 
-      //$this->collectionWaysCObj->createIndex( array( "longitudeMin" => 1, "longitudeMax" => 1, "latitudeMin" => 1, "latitudeMax" => 1 ) );
-      //$this->collectionWaysCObj->createIndex( array( "tags" => "text" ) );
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_id_way" ) ){
+        $this->collectionTmpWayNodeCObj->createIndex( array( "id_way" => 1 ), array( "name" => "osm_id_way" ) );
+      }
+
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_id_node" ) ){
+        $this->collectionTmpWayNodeCObj->createIndex( array( "id_node" => 1 ), array( "name" => "osm_id_node" ) );
+      }
+
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_id_way_id_node" ) ){
+        $this->collectionTmpWayNodeCObj->createIndex( array( "id_way" => 1, "id_node" => 1 ), array( "name" => "osm_id_way_id_node" ) );
+      }
+
+      // coleção nodes
+      $indexInfoLArr =  $this->collectionNodesCObj->getIndexInfo();
+
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_location_2d_26bits" ) ){
+        $this->collectionNodesCObj->createIndex( array( "location" => "2d", "bits" => 26 ), array( "name" => "osm_location_2d_26bits" ) );
+      }
+
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_tags" ) ){
+        $this->collectionNodesCObj->createIndex( array( "tags" => 1 ), array( "name" => "osm_tags" ) );
+      }
+
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_tags_name" ) ){
+        $this->collectionNodesCObj->createIndex( array( "tags.name.val" => 1 ), array( "name" => "osm_tags_name" ) );
+      }
+
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_tags_place" ) ){
+        $this->collectionNodesCObj->createIndex( array( "tags.place.val" => 1 ), array( "name" => "osm_tags_place" ) );
+      }
+
+      // coleção ways
+      $indexInfoLArr =  $this->collectionWaysCObj->getIndexInfo();
+
+      if( !$this->getIndexExists( $indexInfoLArr, "osm_nodes_2d" ) ){
+        $this->collectionWaysCObj->createIndex( array( "nodes" => "2d", "bits" => 26 ), array( "name" => "osm_nodes_2d_26bits" ) );
+      }
     }
 
     public function insertNode( $dataAArr )
@@ -288,6 +328,10 @@
       return $this->collectionWaysCObj->find( $dataAArr, $fieldListAArr );
     }
 
+    /**
+     * @param null $limitAUInt
+     * @param null $skipAUInt
+     */
     public function concatenateNodeData( $limitAUInt = null, $skipAUInt = null )
     {
       $cursorTmpNodeLObj = $this->collectionTmpNodesCObj->find(
