@@ -1,40 +1,46 @@
-OpenStreetMaps to MongoDB
--------------------------
+#Open Street Map XML
 
-![Imagem de exemplo](https://raw.githubusercontent.com/helmutkemper/OpenStreetMapsToMongoDb/master/map_test_cut1.png)
+Este é um trabalho preliminar e sujeito a mudanças. Use por sua conta e risco.
 
-Este é um trabalho preliminar e sujeito a alterações sem aviso prévio, por favor, use por sua conta e risco.
+```PHP
+<?php
 
-##Licença:
+  session_start();
 
-Este código é aberto e feito com o intuito de ajudar, porém, sem garantias de funcionar ou obrigação de suporte de qualquer forma da minha parte.
+  include_once "./size.class.php";
 
-Você é livre para copiar e usar o código desse repositório conforme as suas necessidades e livre para lucrar com ele, sem ter que me pagar royalties, desde que siga as regras abaixo:
+  include_once "./genericMysql.class.php";
+  include_once "./db.class.php";
 
-* Para usar este código, você se compromete a divulgar meu nome como sendo o criador original;
-* Você se compromete a me enviar de forma documentada qualquer correção e/ou melhorias feitas no código para que as mesmas sejam adicionas ao projeto original de forma aberta a toda a comunidade, sem custos;
-* Você se compromete a contribuir tecnicamente com a comunidade de desenvolvedores de forma gratuita;
-* Você se compromete a me manter informado onde o código é usado e me enviar material de divulgação, para seja feita propaganda desse código e casos de sucesso;
-* Você se compromete a não usar o código em aplicações que possam colocar a vida de pessoas em risco desnecessários ou aplicações militares sem autorização prévia da minha parte.
+  include_once "./userMySqlSupport.class.php";
+  include_once "./user.class.php";
 
-###Finalidade:
 
-Este repositório contém uma série de códigos feito para importar um arquivo XML no padrão OSM do OpenStreetMaps e permitir o processamento geográfico de informações contidas no mapa para as mais diversas aplicações, incluindo IoT, onde o georreferenciamento é fundamental.
+  include_once "./osmXmlMySqlSupport.class.php";
+  include_once "./osmXml.class.php";
 
-####Código Modular.
+  $userLObj = new user();
 
-O código é todo dividido em módulos, de forma a permitir o balanceamento dos servidores e testado em uma simples instalação xampp sem alterações sempre que possível, o que não se aplica ao pré-processamento do ambiente gráfico atual ( v0.1 de 04/2016 )
+  // true - salva um arquivo com o SQL do banco no disco rígido
+  // size::KByte( 10 ) - Lê apenas 10KB do arquivo .osm por vês, bom para computadores lentos
+  // size::MByte( 10 ) - Espera o arquivo SQL ocupar 10MB na memória para compactar ( este é o
+  //                     tamanho máximo do arquivo para a instalação básica do XAMPP )
+  $parserXmlLObj = new osmXml( true, size::KByte( 10 ), size::MByte( 10 ) );
+  $parserXmlLObj->connect( "127.0.0.1", "user", "password" );
+  
+  // Apenas deixe isto, por enquanto
+  $parserXmlLObj->addIdUser( 1 );
+  
+  // Apenas deixe isto, por enquanto
+  $parserXmlLObj->addIdLoader( 1 );
+  
+  // Nome da nova base de dados
+  $parserXmlLObj->createDataBaseAndSelect( "gis" );
+  
+  // Cria a base de dados completa
+  $parserXmlLObj->createTables();
+  
+  // Processa o arquivo XML
+  $parserXmlLObj->processOsmFile( "./brazil-latest.osm" );
 
-####MongoDB
-
-Todo o projeto fei feito pensado em se aproveitar todo o poder de processamento das novas tecnologias noSQL, e por isto, foi escolhido o MongoDB para a finalidade.
-
-Quando instalar o servidor, tome cuidado de adicionar os servidores "replica sets" antes da primeira carga, pois, mapas como o do Brasil contém mais 30 milhões de entradas fácil, e deixar para replicar os servidores em produção pode gerar um trafego de rede inesperado.
-
-####IoT e MQTT
-
-Como o código é modular, fica fácil arquivar os dados geográficos de todos os dispositivos em uma nova coleção de dados e isto será devidamente explicado assim que o sistema fique pronto.
-
-Cordialmente,<br>
-Helmut Kemper<br>
-helmut.kemper no mail do google.
+```
