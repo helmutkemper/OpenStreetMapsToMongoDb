@@ -1,7 +1,7 @@
 OpenStreetMaps to MongoDB
 -------------------------
 
-![Imagem de exemplo](https://raw.githubusercontent.com/helmutkemper/OpenStreetMapsToMongoDb/master/map_test_cut1.png)
+![Imagem de exemplo](https://github.com/helmutkemper/OpenStreetMapsToMongoDb/blob/master/map_test_cut1.png)
 
 Este é um trabalho preliminar e sujeito a alterações sem aviso prévio, por favor, use por sua conta e risco.
 
